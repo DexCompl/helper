@@ -113,15 +113,9 @@
             max-width: 900px;
         }
 
-        .page-content h2 {
-            margin-bottom: 20px;
-            color: var(--text-color);
-        }
-
-        .page-content p {
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
+        .page-content h2 { margin-bottom: 20px; color: var(--text-color); }
+        .page-content h3 { margin-top: 20px; margin-bottom: 10px; color: var(--text-color); }
+        .page-content p { margin-bottom: 15px; font-size: 18px; }
 
         .warning-box {
             background-color: rgba(211, 47, 47, 0.1);
@@ -137,20 +131,27 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-top: 0;
         }
 
         .warning-box p {
             margin-bottom: 0;
             font-size: 16px;
         }
+        
+        .ip-text {
+            font-size: 24px; 
+            font-weight: bold; 
+            color: var(--accent-color);
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
 
+    <!-- ЛЕВОЕ МЕНЮ (выделена Информация) -->
     <aside class="sidebar">
-        <!-- Здесь мы делаем активной именно info.html -->
         <a href="info.html" class="active">Информация</a>
-        <a href="dexland.html">Dexland</a>
         <a href="rules.html">Правила Dexland</a>
         <a href="commands.html">Полезные команды</a>
         <a href="flags.html">Флаги регионов</a>
@@ -159,19 +160,40 @@
         <a href="recovery.html">Восстановление аккаунта</a>
     </aside>
 
+    <!-- ПРАВАЯ ЧАСТЬ -->
     <main class="main-content">
         <button class="theme-toggle" id="theme-toggle" title="Сменить тему">☀️</button>
+
         <header>
             <h1>DexCompl</h1>
         </header>
         
         <div class="page-content">
             <h2>О проекте DexCompl</h2>
+            
             <p><strong>DexCompl</strong> — это неофициальный фанатский проект, созданный игроками для игроков сервера Dexland. Здесь собрано всё самое необходимое для комфортной игры: полезные гайды, правила, команды и удобные инструменты. Мы стремимся сделать ваше пребывание на сервере максимально простым и приятным.</p>
             
             <div class="warning-box">
                 <h3>⚠️ Важное уточнение</h3>
                 <p>Создатели DexCompl <strong>не являются</strong> частью администрации или команды модерации проекта Dexland. Мы — обычные игроки, которые просто хотят поделиться полезной информацией и помочь сообществу. Все официальные вопросы, связанные с работой сервера, необходимо решать напрямую через администрацию Dexland.</p>
+            </div>
+
+            <br><hr style="border-color: var(--border-color); margin: 30px 0;"><br>
+
+            <h3>Как начать играть?</h3>
+            <p>Чтобы присоединиться к нашему миру, скопируйте IP-адрес и добавьте его в список серверов в Minecraft.</p>
+            <p class="ip-text">play.dexland.ru</p>
+            <p><em>Поддерживаемые версии: 1.16.5 - 1.20.4</em></p>
+
+            <br><hr style="border-color: var(--border-color); margin: 30px 0;"><br>
+
+            <h3>Присоединяйтесь к нашему сообществу!</h3>
+            <p>Здесь вы можете найти друзей, узнать о предстоящих ивентах и пообщаться с другими игроками.</p>
+            
+            <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="#" style="background-color: #5865F2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Discord</a>
+                <a href="#" style="background-color: #0088cc; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Telegram</a>
+                <a href="#" style="background-color: #4C75A3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">ВКонтакте</a>
             </div>
         </div>
     </main>
