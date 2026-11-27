@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Информация - Dexcompl</title>
+    <style>
+        /* Тот же стиль, что и на главной */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #ffffff; color: #000000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; min-height: 100vh; }
+        
+        .sidebar { width: 280px; background-color: #f4f4f4; border-right: 2px solid #ddd; display: flex; flex-direction: column; padding-top: 20px; flex-shrink: 0; }
+        .sidebar a { display: flex; align-items: center; justify-content: center; height: 60px; text-decoration: none; color: #333; font-size: 16px; font-weight: 500; border-bottom: 1px solid #e0e0e0; transition: background 0.2s; }
+        .sidebar a:hover { background-color: #e0e0e0; color: #000; }
+        
+        .main-content { flex-grow: 1; display: flex; flex-direction: column; }
+        header { text-align: center; padding: 30px 20px; border-bottom: 2px solid #e0e0e0; }
+        h1 { font-size: 3rem; font-weight: bold; letter-spacing: 2px; color: #333333; }
+        
+        /* Стили для текста внутри страницы */
+        .page-content { padding: 40px; line-height: 1.6; }
+        .page-content h2 { margin-bottom: 20px; color: #333; }
+        .page-content p { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <!-- ЛЕВОЕ МЕНЮ (копируется на каждую страницу) -->
+    <aside class="sidebar">
+        <a href="index.html">Информация</a> <!-- index.html выделен, так как мы на этой странице -->
+        <a href="dexland.html">Dexland</a>
+        <a href="rules.html">Правила Dexland</a>
+        <a href="commands.html">Полезные команды</a>
+        <a href="flags.html">Флаги регионов</a>
+        <a href="colors.html">Коды цветов</a>
+        <a href="symbols.html">Разнообразные символы</a>
+        <a href="recovery.html">Восстановление аккаунта</a>
+    </aside>
+
+    <!-- КОНТЕНТ СТРАНИЦЫ -->
+    <main class="main-content">
+        <header>
+            <h1>Dexcompl</h1>
+        </header>
+        
+        <div class="page-content">
+            <h2>Информация</h2>
+            <p>Здесь будет текст про наш сервер. Вы можете написать тут всё, что угодно.</p>
+        </div>
+    </main>
+
+</body>
+</html>
