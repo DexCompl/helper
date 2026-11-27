@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Здесь меняй название вкладки в браузере -->
-    <title>Название страницы - Dexcompl</title>
+    <title>Информация - DexCompl</title>
     <style>
         /* --- ЦВЕТА ДЛЯ СВЕТЛОЙ ТЕМЫ --- */
         :root {
@@ -13,6 +12,7 @@
             --sidebar-bg: #f4f4f4;
             --border-color: #e0e0e0;
             --hover-color: #e0e0e0;
+            --accent-color: #d32f2f; /* Красный цвет для предупреждения */
         }
 
         /* --- ЦВЕТА ДЛЯ ТЕМНОЙ ТЕМЫ --- */
@@ -22,13 +22,14 @@
             --sidebar-bg: #2d2d2d;
             --border-color: #444444;
             --hover-color: #444444;
+            --accent-color: #ff5252; /* Более яркий красный для темной темы */
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
@@ -66,7 +67,7 @@
             background-color: var(--hover-color);
         }
 
-        /* Выделяем ту страницу, на которой сейчас находимся */
+        /* Выделяем активную страницу */
         .sidebar a.active {
             background-color: var(--border-color);
             font-weight: bold;
@@ -126,6 +127,29 @@
 
         .page-content p {
             margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        /* Красивая плашка для предупреждения */
+        .warning-box {
+            background-color: rgba(211, 47, 47, 0.1); /* Полупрозрачный красный фон */
+            border-left: 5px solid var(--accent-color);
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 4px;
+        }
+
+        .warning-box h3 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .warning-box p {
+            margin-bottom: 0;
+            font-size: 16px;
         }
 
     </style>
@@ -134,7 +158,8 @@
 
     <!-- ЛЕВОЕ МЕНЮ -->
     <aside class="sidebar">
-        <a href="index.html">Информация</a>
+        <!-- На главной странице "Информация" ведет на index.html и выделена классом active -->
+        <a href="index.html" class="active">Информация</a>
         <a href="dexland.html">Dexland</a>
         <a href="rules.html">Правила Dexland</a>
         <a href="commands.html">Полезные команды</a>
@@ -150,14 +175,18 @@
         <button class="theme-toggle" id="theme-toggle" title="Сменить тему">☀️</button>
 
         <header>
-            <h1>Dexcompl</h1>
+            <h1>DexCompl</h1>
         </header>
         
-        <!-- ЗДЕСЬ МЕНЯЙ ТЕКСТ ДЛЯ КАЖДОЙ СТРАНИЦЫ -->
         <div class="page-content">
-            <h2>Название раздела</h2>
-            <p>Здесь будет текст для этой страницы. Вы можете добавить сюда списки, картинки или таблицы.</p>
-            <p>Чтобы добавить новый абзац, просто скопируйте эту строку.</p>
+            <h2>О проекте DexCompl</h2>
+            
+            <p><strong>DexCompl</strong> — это неофициальный фанатский проект, созданный игроками для игроков сервера Dexland. Здесь собрано всё самое необходимое для комфортной игры: полезные гайды, правила, команды и удобные инструменты. Мы стремимся сделать ваше пребывание на сервере максимально простым и приятным.</p>
+            
+            <div class="warning-box">
+                <h3>⚠️ Важное уточнение</h3>
+                <p>Создатели DexCompl <strong>не являются</strong> частью администрации или команды модерации проекта Dexland. Мы — обычные игроки, которые просто хотят поделиться полезной информацией и помочь сообществу. Все официальные вопросы, связанные с работой сервера, необходимо решать напрямую через администрацию Dexland.</p>
+            </div>
         </div>
     </main>
 
@@ -166,12 +195,14 @@
         const themeToggleBtn = document.getElementById('theme-toggle');
         const body = document.body;
 
+        // Проверяем, сохранена ли тема
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'dark') {
             body.classList.add('dark-theme');
             themeToggleBtn.textContent = '🌙';
         }
 
+        // Переключение темы
         themeToggleBtn.addEventListener('click', () => {
             body.classList.toggle('dark-theme');
             if (body.classList.contains('dark-theme')) {
