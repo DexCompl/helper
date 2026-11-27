@@ -5,75 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dexcompl</title>
     <style>
+        /* --- ПЕРЕМЕННЫЕ ДЛЯ ЦВЕТОВ (СВЕТЛАЯ ТЕМА ПО УМОЛЧАНИЮ) --- */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --sidebar-bg: #f4f4f4;
+            --border-color: #e0e0e0;
+            --hover-color: #e0e0e0;
+        }
+
+        /* --- ПЕРЕМЕННЫЕ ДЛЯ ЦВЕТОВ (ТЕМНАЯ ТЕМА) --- */
+        body.dark-theme {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s; /* Плавный переход цветов */
         }
 
         body {
-            background-color: #ffffff;
-            color: #000000;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex; /* Делает так, чтобы меню и контент стояли в ряд */
+            display: flex;
             min-height: 100vh;
         }
 
         /* --- ЛЕВОЕ МЕНЮ --- */
         .sidebar {
-            width: 280px; /* Фиксированная ширина меню */
-            background-color: #f4f4f4; /* Светло-серый фон, чтобы выделялось на белом */
-            border-right: 2px solid #ddd;
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 2px solid var(--border-color);
             display: flex;
-            flex-direction: column; /* Выстраиваем кнопки в столбик */
+            flex-direction: column;
             padding-top: 20px;
             flex-shrink: 0;
         }
 
-        /* Стили для каждой строчки-ссылки */
         .sidebar a {
             display: flex;
-            align-items: center; /* Центрируем текст по вертикали */
-            justify-content: center; /* Центрируем текст по горизонтали */
-            height: 60px; /* Одинаковая высота для всех строчек (равноразмерные) */
-            text-decoration: none; /* Убираем подчеркивание у ссылок */
-            color: #333;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            text-decoration: none;
+            color: var(--text-color);
             font-size: 16px;
             font-weight: 500;
-            border-bottom: 1px solid #e0e0e0;
-            transition: background 0.2s;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        /* Эффект при наведении мыши */
         .sidebar a:hover {
-            background-color: #e0e0e0;
-            color: #000;
+            background-color: var(--hover-color);
         }
 
         /* --- ПРАВАЯ ЧАСТЬ --- */
         .main-content {
-            flex-grow: 1; /* Занимает всё оставшееся место */
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
+            position: relative; /* Важно для кнопки темы */
+        }
+
+        /* --- КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ --- */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--hover-color);
         }
 
         header {
             text-align: center;
             padding: 30px 20px;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 2px solid var(--border-color);
         }
 
         h1 {
             font-size: 3rem;
             font-weight: bold;
             letter-spacing: 2px;
-            color: #333333;
+            color: var(--text-color);
         }
 
         .content-area {
             padding: 40px;
             text-align: center;
-            color: #666;
         }
     </style>
 </head>
@@ -81,8 +115,7 @@
 
     <!-- ЛЕВОЕ МЕНЮ -->
     <aside class="sidebar">
-        <!-- Ссылки ведут на другие html-файлы, которые мы создадим -->
-        <a href="info.html">Информация</a>
+        <a href="index.html">Информация</a>
         <a href="dexland.html">Dexland</a>
         <a href="rules.html">Правила Dexland</a>
         <a href="commands.html">Полезные команды</a>
@@ -94,6 +127,10 @@
 
     <!-- ПРАВАЯ ЧАСТЬ -->
     <main class="main-content">
+        
+        <!-- Кнопка смены темы -->
+        <button class="theme-toggle" id="theme-toggle" title="Сменить тему">☀️</button>
+
         <header>
             <h1>Dexcompl</h1>
         </header>
@@ -104,5 +141,31 @@
         </div>
     </main>
 
+    <!-- СКРИПТ ДЛЯ ПЕРЕКЛЮЧЕНИЯ ТЕМЫ -->
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Проверяем, сохранял ли пользователь тему ранее
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeToggleBtn.textContent = '🌙'; // Меняем солнышко на луну
+        }
+
+        // Обработчик клика по кнопке
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+
+            // Меняем иконку и сохраняем выбор
+            if (body.classList.contains('dark-theme')) {
+                themeToggleBtn.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggleBtn.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
 </body>
 </html>
