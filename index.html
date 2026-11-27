@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dexcompl</title>
+    <title>Главная - DexCompl</title>
     <style>
-        /* --- ПЕРЕМЕННЫЕ ДЛЯ ЦВЕТОВ (СВЕТЛАЯ ТЕМА ПО УМОЛЧАНИЮ) --- */
         :root {
             --bg-color: #ffffff;
             --text-color: #333333;
             --sidebar-bg: #f4f4f4;
             --border-color: #e0e0e0;
             --hover-color: #e0e0e0;
+            --accent-color: #d32f2f;
         }
 
-        /* --- ПЕРЕМЕННЫЕ ДЛЯ ЦВЕТОВ (ТЕМНАЯ ТЕМА) --- */
         body.dark-theme {
             --bg-color: #1e1e1e;
             --text-color: #ffffff;
             --sidebar-bg: #2d2d2d;
             --border-color: #444444;
             --hover-color: #444444;
+            --accent-color: #ff5252;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s; /* Плавный переход цветов */
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
@@ -38,7 +38,6 @@
             min-height: 100vh;
         }
 
-        /* --- ЛЕВОЕ МЕНЮ --- */
         .sidebar {
             width: 280px;
             background-color: var(--sidebar-bg);
@@ -65,15 +64,18 @@
             background-color: var(--hover-color);
         }
 
-        /* --- ПРАВАЯ ЧАСТЬ --- */
+        .sidebar a.active {
+            background-color: var(--border-color);
+            font-weight: bold;
+        }
+
         .main-content {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            position: relative; /* Важно для кнопки темы */
+            position: relative;
         }
 
-        /* --- КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ --- */
         .theme-toggle {
             position: absolute;
             top: 20px;
@@ -105,17 +107,49 @@
             color: var(--text-color);
         }
 
-        .content-area {
+        .page-content {
             padding: 40px;
-            text-align: center;
+            line-height: 1.6;
+            max-width: 900px;
+        }
+
+        .page-content h2 {
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .page-content p {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .warning-box {
+            background-color: rgba(211, 47, 47, 0.1);
+            border-left: 5px solid var(--accent-color);
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 4px;
+        }
+
+        .warning-box h3 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .warning-box p {
+            margin-bottom: 0;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
 
-    <!-- ЛЕВОЕ МЕНЮ -->
     <aside class="sidebar">
-        <a href="index.html">Информация</a>
+        <!-- На главной странице ведет на info.html, но так как главная - это и есть информация, оставляем index.html -->
+        <a href="index.html" class="active">Информация</a>
         <a href="dexland.html">Dexland</a>
         <a href="rules.html">Правила Dexland</a>
         <a href="commands.html">Полезные команды</a>
@@ -125,39 +159,33 @@
         <a href="recovery.html">Восстановление аккаунта</a>
     </aside>
 
-    <!-- ПРАВАЯ ЧАСТЬ -->
     <main class="main-content">
-        
-        <!-- Кнопка смены темы -->
         <button class="theme-toggle" id="theme-toggle" title="Сменить тему">☀️</button>
-
         <header>
-            <h1>Dexcompl</h1>
+            <h1>DexCompl</h1>
         </header>
         
-        <div class="content-area">
-            <h2>Добро пожаловать!</h2>
-            <p>Выберите нужный пункт в меню слева.</p>
+        <div class="page-content">
+            <h2>О проекте DexCompl</h2>
+            <p><strong>DexCompl</strong> — это неофициальный фанатский проект, созданный игроками для игроков сервера Dexland. Здесь собрано всё самое необходимое для комфортной игры: полезные гайды, правила, команды и удобные инструменты. Мы стремимся сделать ваше пребывание на сервере максимально простым и приятным.</p>
+            
+            <div class="warning-box">
+                <h3>⚠️ Важное уточнение</h3>
+                <p>Создатели DexCompl <strong>не являются</strong> частью администрации или команды модерации проекта Dexland. Мы — обычные игроки, которые просто хотят поделиться полезной информацией и помочь сообществу. Все официальные вопросы, связанные с работой сервера, необходимо решать напрямую через администрацию Dexland.</p>
+            </div>
         </div>
     </main>
 
-    <!-- СКРИПТ ДЛЯ ПЕРЕКЛЮЧЕНИЯ ТЕМЫ -->
     <script>
         const themeToggleBtn = document.getElementById('theme-toggle');
         const body = document.body;
-
-        // Проверяем, сохранял ли пользователь тему ранее
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'dark') {
             body.classList.add('dark-theme');
-            themeToggleBtn.textContent = '🌙'; // Меняем солнышко на луну
+            themeToggleBtn.textContent = '🌙';
         }
-
-        // Обработчик клика по кнопке
         themeToggleBtn.addEventListener('click', () => {
             body.classList.toggle('dark-theme');
-
-            // Меняем иконку и сохраняем выбор
             if (body.classList.contains('dark-theme')) {
                 themeToggleBtn.textContent = '🌙';
                 localStorage.setItem('theme', 'dark');
