@@ -5,43 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dexcompl</title>
     <style>
-        /* Убираем стандартные отступы браузера */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Делаем фон белым, а шрифт черным (чтобы было видно) */
         body {
             background-color: #ffffff;
             color: #000000;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex; /* Делает так, чтобы меню и контент стояли в ряд */
             min-height: 100vh;
         }
 
-        /* Настройка верхней панели с названием */
-        header {
-            text-align: center; /* Выравнивание по центру */
-            padding: 30px 20px; /* Отступы сверху/снизу и по бокам */
-            border-bottom: 2px solid #e0e0e0; /* Тонкая серая линия под названием (для красоты) */
+        /* --- ЛЕВОЕ МЕНЮ --- */
+        .sidebar {
+            width: 280px; /* Фиксированная ширина меню */
+            background-color: #f4f4f4; /* Светло-серый фон, чтобы выделялось на белом */
+            border-right: 2px solid #ddd;
+            display: flex;
+            flex-direction: column; /* Выстраиваем кнопки в столбик */
+            padding-top: 20px;
+            flex-shrink: 0;
         }
 
-        /* Настройка самого текста "Dexcompl" */
+        /* Стили для каждой строчки-ссылки */
+        .sidebar a {
+            display: flex;
+            align-items: center; /* Центрируем текст по вертикали */
+            justify-content: center; /* Центрируем текст по горизонтали */
+            height: 60px; /* Одинаковая высота для всех строчек (равноразмерные) */
+            text-decoration: none; /* Убираем подчеркивание у ссылок */
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background 0.2s;
+        }
+
+        /* Эффект при наведении мыши */
+        .sidebar a:hover {
+            background-color: #e0e0e0;
+            color: #000;
+        }
+
+        /* --- ПРАВАЯ ЧАСТЬ --- */
+        .main-content {
+            flex-grow: 1; /* Занимает всё оставшееся место */
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
         h1 {
-            font-size: 3rem; /* Размер шрифта */
-            font-weight: bold; /* Жирный шрифт */
-            letter-spacing: 2px; /* Расстояние между буквами */
-            color: #333333; /* Темно-серый цвет текста */
+            font-size: 3rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #333333;
+        }
+
+        .content-area {
+            padding: 40px;
+            text-align: center;
+            color: #666;
         }
     </style>
 </head>
 <body>
 
-    <!-- Верхняя часть с названием -->
-    <header>
-        <h1>Dexcompl</h1>
-    </header>
+    <!-- ЛЕВОЕ МЕНЮ -->
+    <aside class="sidebar">
+        <!-- Ссылки ведут на другие html-файлы, которые мы создадим -->
+        <a href="info.html">Информация</a>
+        <a href="dexland.html">Dexland</a>
+        <a href="rules.html">Правила Dexland</a>
+        <a href="commands.html">Полезные команды</a>
+        <a href="flags.html">Флаги регионов</a>
+        <a href="colors.html">Коды цветов</a>
+        <a href="symbols.html">Разнообразные символы</a>
+        <a href="recovery.html">Восстановление аккаунта</a>
+    </aside>
+
+    <!-- ПРАВАЯ ЧАСТЬ -->
+    <main class="main-content">
+        <header>
+            <h1>Dexcompl</h1>
+        </header>
+        
+        <div class="content-area">
+            <h2>Добро пожаловать!</h2>
+            <p>Выберите нужный пункт в меню слева.</p>
+        </div>
+    </main>
 
 </body>
 </html>
