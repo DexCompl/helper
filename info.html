@@ -5,24 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Информация - DexCompl</title>
     <style>
-        /* --- ЦВЕТА ДЛЯ СВЕТЛОЙ ТЕМЫ --- */
         :root {
             --bg-color: #ffffff;
             --text-color: #333333;
             --sidebar-bg: #f4f4f4;
             --border-color: #e0e0e0;
             --hover-color: #e0e0e0;
-            --accent-color: #d32f2f; /* Красный цвет для предупреждения */
+            --accent-color: #d32f2f;
         }
 
-        /* --- ЦВЕТА ДЛЯ ТЕМНОЙ ТЕМЫ --- */
         body.dark-theme {
             --bg-color: #1e1e1e;
             --text-color: #ffffff;
             --sidebar-bg: #2d2d2d;
             --border-color: #444444;
             --hover-color: #444444;
-            --accent-color: #ff5252; /* Более яркий красный для темной темы */
+            --accent-color: #ff5252;
         }
 
         * {
@@ -40,7 +38,6 @@
             min-height: 100vh;
         }
 
-        /* --- ЛЕВОЕ МЕНЮ --- */
         .sidebar {
             width: 280px;
             background-color: var(--sidebar-bg);
@@ -67,13 +64,11 @@
             background-color: var(--hover-color);
         }
 
-        /* Выделяем активную страницу */
         .sidebar a.active {
             background-color: var(--border-color);
             font-weight: bold;
         }
 
-        /* --- ПРАВАЯ ЧАСТЬ --- */
         .main-content {
             flex-grow: 1;
             display: flex;
@@ -81,7 +76,6 @@
             position: relative;
         }
 
-        /* --- КНОПКА ТЕМЫ --- */
         .theme-toggle {
             position: absolute;
             top: 20px;
@@ -113,7 +107,6 @@
             color: var(--text-color);
         }
 
-        /* --- СТИЛИ ДЛЯ КОНТЕНТА СТРАНИЦЫ --- */
         .page-content {
             padding: 40px;
             line-height: 1.6;
@@ -130,9 +123,8 @@
             font-size: 18px;
         }
 
-        /* Красивая плашка для предупреждения */
         .warning-box {
-            background-color: rgba(211, 47, 47, 0.1); /* Полупрозрачный красный фон */
+            background-color: rgba(211, 47, 47, 0.1);
             border-left: 5px solid var(--accent-color);
             padding: 20px;
             margin-top: 30px;
@@ -151,15 +143,13 @@
             margin-bottom: 0;
             font-size: 16px;
         }
-
     </style>
 </head>
 <body>
 
-    <!-- ЛЕВОЕ МЕНЮ -->
     <aside class="sidebar">
-        <!-- На главной странице "Информация" ведет на index.html и выделена классом active -->
-        <a href="index.html" class="active">Информация</a>
+        <!-- Здесь мы делаем активной именно info.html -->
+        <a href="info.html" class="active">Информация</a>
         <a href="dexland.html">Dexland</a>
         <a href="rules.html">Правила Dexland</a>
         <a href="commands.html">Полезные команды</a>
@@ -169,18 +159,14 @@
         <a href="recovery.html">Восстановление аккаунта</a>
     </aside>
 
-    <!-- ПРАВАЯ ЧАСТЬ -->
     <main class="main-content">
-        
         <button class="theme-toggle" id="theme-toggle" title="Сменить тему">☀️</button>
-
         <header>
             <h1>DexCompl</h1>
         </header>
         
         <div class="page-content">
             <h2>О проекте DexCompl</h2>
-            
             <p><strong>DexCompl</strong> — это неофициальный фанатский проект, созданный игроками для игроков сервера Dexland. Здесь собрано всё самое необходимое для комфортной игры: полезные гайды, правила, команды и удобные инструменты. Мы стремимся сделать ваше пребывание на сервере максимально простым и приятным.</p>
             
             <div class="warning-box">
@@ -190,19 +176,14 @@
         </div>
     </main>
 
-    <!-- СКРИПТ ДЛЯ ТЕМЫ -->
     <script>
         const themeToggleBtn = document.getElementById('theme-toggle');
         const body = document.body;
-
-        // Проверяем, сохранена ли тема
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'dark') {
             body.classList.add('dark-theme');
             themeToggleBtn.textContent = '🌙';
         }
-
-        // Переключение темы
         themeToggleBtn.addEventListener('click', () => {
             body.classList.toggle('dark-theme');
             if (body.classList.contains('dark-theme')) {
