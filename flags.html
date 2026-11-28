@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Флаги регионов - DexCompl</title>
+    
+    <!-- ЗАЩИТА ОТ ВСПЫШКИ СВЕТЛОЙ ТЕМЫ -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme-preload');
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --sidebar-bg: #f4f4f4;
+            --border-color: #e0e0e0;
+            --hover-color: #e0e0e0;
+            --card-bg: #f9f9f9;
+            --accent-color: #4CAF50;
+            --danger-color: #d32f2f;
+            --warn-color: #f57c00;
+            --cmd-color: #2b78e4;
+        }
+
+        html.dark-theme-preload {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --danger-color: #ff5252;
+            --warn-color: #ffb74d;
+            --cmd-color: #64b5f6;
+        }
+
+        body.dark-theme {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --danger-color: #ff5252;
+            --warn-color: #ffb74d;
+            --cmd-color: #64b5f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- ЛЕВОЕ МЕНЮ --- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar a:hover { background-color: var(--hover-color); }
+        .sidebar a.active { background-color: var(--border-color); font-weight: bold; }
+
+        /* --- ПРАВАЯ ЧАСТЬ --- */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover { background-color: var(--hover-color); }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 { font-size: 3rem; font-weight: bold; letter-spacing: 2px; color: var(--text-color); }
+
+        /* --- КОНТЕНТ --- */
+        .page-content {
+            padding: 40px;
+            line-height: 1.6;
+            max-width: 1000px;
+        }
+
+        .page-content h2 { margin-bottom: 15px; color: var(--text-color); text-align: center; }
+        
+        .info-box {
+            background-color: rgba(43, 120, 228, 0.1);
+            border-left: 5px solid var(--cmd-color);
+            padding: 15px 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        .info-box code {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: var(--cmd-color);
+        }
+
+        /* Стили для аккордеона */
+        details {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        summary {
+            padding: 15px 20px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: var(--sidebar-bg);
+            border-left: 5px solid var(--accent-color);
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+
+        summary::after {
+            content: "+";
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        details[open] summary::after { content: "−"; }
+
+        .details-content {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Стили для флагов */
+        .flag-item {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+        .flag-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .flag-name {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: var(--cmd-color);
+            font-size: 16px;
+        }
+
+        .flag-desc {
+            font-size: 15px;
+            margin-top: 3px;
+            color: var(--text-color);
+        }
+
+        .flag-values {
+            font-size: 14px;
+            color: var(--warn-color);
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <a href="index.html">Информация</a>
+        <a href="rules.html">Правила Dexland</a>
+        <a href="commands.html">Полезные команды</a>
+        <a href="flags.html" class="active">Флаги регионов</a>
+        <a href="colors.html">Коды цветов</a>
+        <a href="symbols.html">Разнообразные символы</a>
+        <a href="recovery.html">Восстановление аккаунта</a>
+    </aside>
+
+    <main class="main-content">
+        <button class="theme-toggle" id="theme-toggle" title="Сменить тему">☀️</button>
+
+        <header>
+            <h1>DexCompl</h1>
+        </header>
+        
+        <div class="page-content">
+            <h2>Флаги для регионов</h2>
+            
+            <div class="info-box">
+                <strong>Как использовать:</strong><br>
+                <code>allow</code> — разрешить, <code>deny</code> — запретить.<br>
+                <strong>Пример:</strong> <code>/rg f [Название рг] pvp deny</code> — отключил ПВП в регионе.
+            </div>
+
+            <!-- РАЗДЕЛ 1: БАЗОВЫЕ -->
+            <details open>
+                <summary>1. Базовые флаги</summary>
+                <div class="details-content">
+                    <div class="flag-item">
+                        <span class="flag-name">build</span>
+                        <span class="flag-desc">Включить или выключить разрешение ВСЕМ игрокам строить и ломать в регионе.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">use</span>
+                        <span class="flag-desc">Использование механизмов (дверей, кнопок, рычагов и т.д.).</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">interact</span>
+                        <span class="flag-desc">Убивать мобов и взаимодействовать с некоторыми предметами (двери, нажимные плиты).</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">chest-access</span>
+                        <span class="flag-desc">Доступ к сундукам и прочим блокам, в которые кладутся вещи.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">pvp</span>
+                        <span class="flag-desc">Разрешить или запретить PvP в регионе.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">invincible</span>
+                        <span class="flag-desc">Бессмертие в регионе.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">fall-damage</span>
+                        <span class="flag-desc">Урон от падения.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">item-drop</span>
+                        <span class="flag-desc">Выбрасывание вещей.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">exp-drops</span>
+                        <span class="flag-desc">Сбор опыта.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 2: ЗАЩИТА И ВЗРЫВЫ -->
+            <details>
+                <summary>2. Защита и Взрывы</summary>
+                <div class="details-content">
+                    <div class="flag-item">
+                        <span class="flag-name">mob-damage</span>
+                        <span class="flag-desc">Урон от мобов.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">creeper-explosion</span>
+                        <span class="flag-desc">Взрыв криперов.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">tnt</span>
+                        <span class="flag-desc">Взрыв динамита.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">other-explosion</span>
+                        <span class="flag-desc">Другие виды взрывов.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">ghast-fireball</span>
+                        <span class="flag-desc">Взрывы от фаерболов гастов.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">entity-item-frame-destroy</span>
+                        <span class="flag-desc">Ломать рамки.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">entity-painting-destroy</span>
+                        <span class="flag-desc">Ломать картины.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">enderdragon-block-damage</span>
+                        <span class="flag-desc">Урон блокам от дракона Эндера.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">lighter</span>
+                        <span class="flag-desc">Использование зажигалки.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">fire-spread</span>
+                        <span class="flag-desc">Распространение огня.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 3: МОБЫ И ЖИВОТНЫЕ -->
+            <details>
+                <summary>3. Мобы и Животные</summary>
+                <div class="details-content">
+                    <div class="flag-item">
+                        <span class="flag-name">mob-spawning</span>
+                        <span class="flag-desc">Спавн мобов.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">deny-spawn</span>
+                        <span class="flag-desc">Запретить спавнится перечисленным мобам.</span>
+                        <span class="flag-values">моб, моб1, моб2</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">damage-animals</span>
+                        <span class="flag-desc">Урон животным.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 4: МЕХАНИКИ И БЛОКИ -->
+            <details>
+                <summary>4. Механики и Блоки</summary>
+                <div class="details-content">
+                    <div class="flag-item">
+                        <span class="flag-name">enderman-grief</span>
+                        <span class="flag-desc">Кража блоков эндерменом.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">enderpearl</span>
+                        <span class="flag-desc">Использование ока эндера.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">water-flow</span>
+                        <span class="flag-desc">Растекание воды.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">lava-flow</span>
+                        <span class="flag-desc">Растекание лавы.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">pistons</span>
+                        <span class="flag-desc">Использование поршней.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">leaf-decay</span>
+                        <span class="flag-desc">Опадение листвы.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">grass-growth</span>
+                        <span class="flag-desc">Обрастание грязи травой.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">vine-growth</span>
+                        <span class="flag-desc">Распространение лиан.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">ice-form</span>
+                        <span class="flag-desc">Замерзание воды.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">ice-melt</span>
+                        <span class="flag-desc">Таяние льда.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 5: ВРЕМЯ И ПОГОДА -->
+            <details>
+                <summary>5. Время, Погода и Телепортация</summary>
+                <div class="details-content">
+                    <div class="flag-item">
+                        <span class="flag-name">time-lock</span>
+                        <span class="flag-desc">Смещение времени.</span>
+                        <span class="flag-values">число (-24000-24000)</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">weather-lock</span>
+                        <span class="flag-desc">Установить погоду в регионе.</span>
+                        <span class="flag-values">clear / rain</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">lightning</span>
+                        <span class="flag-desc">Удар молнии.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">teleport</span>
+                        <span class="flag-desc">Место для телепорта в регион.</span>
+                        <span class="flag-values">x y z</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">spawn</span>
+                        <span class="flag-desc">Место спавна в регионе.</span>
+                        <span class="flag-values">x y z</span>
+                    </div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 6: ЧАТ, КОМАНДЫ, ВХОД/ВЫХОД -->
+            <details>
+                <summary>6. Чат, Команды и Границы</summary>
+                <div class="details-content">
+                    <div class="flag-item">
+                        <span class="flag-name">entry</span>
+                        <span class="flag-desc">Вход в регион.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">entry-deny-message</span>
+                        <span class="flag-desc">Сообщение игроку о запрете вхождения в регион.</span>
+                        <span class="flag-values">«текст»</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">greeting</span>
+                        <span class="flag-desc">Сообщение при входе в регион (можно использовать %name%, чтобы выводился ник игрока).</span>
+                        <span class="flag-values">текст</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">farewell</span>
+                        <span class="flag-desc">Сообщение при выходе из региона.</span>
+                        <span class="flag-values">текст</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">send-chat</span>
+                        <span class="flag-desc">Возможность писать в чат.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">receive-chat</span>
+                        <span class="flag-desc">Возможность читать чат.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">blocked-cmds</span>
+                        <span class="flag-desc">Блокировать команды в регионе (без слэша, если он не двойной).</span>
+                        <span class="flag-values">команда, команда1</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">allowed-cmds</span>
+                        <span class="flag-desc">Запретить все команды, кроме указанных.</span>
+                        <span class="flag-values">команда, команда1</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">exit</span>
+                        <span class="flag-desc">Выход из региона.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">exit-deny-message</span>
+                        <span class="flag-desc">Сообщение игроку о запрете выхода из региона.</span>
+                        <span class="flag-values">текст</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">game-mode</span>
+                        <span class="flag-desc">Установить игровой режим в регионе.</span>
+                        <span class="flag-values">creative / survival / adventure</span>
+                    </div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 7: ПРОЧЕЕ -->
+            <details>
+                <summary>7. Прочие флаги</summary>
+                <div class="details-content">
+                    <div class="flag-item">
+                        <span class="flag-name">furniture-place</span>
+                        <span class="flag-desc">Разрешить/Запретить ставить мебель в регионе.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">magicwand</span>
+                        <span class="flag-desc">Разрешить/Запретить использование магической палки в регионе.</span>
+                        <span class="flag-values">true / false</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">vehicle-place</span>
+                        <span class="flag-desc">Размещение транспорта (лодок, вагонеток) в регионе.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">vehicle-destroy</span>
+                        <span class="flag-desc">Дроп транспортных блоков.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">ride</span>
+                        <span class="flag-desc">Разрешить/запретить использовать транспорт в регионе.</span>
+                        <span class="flag-values">allow / deny</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">heal-delay / heal-amount</span>
+                        <span class="flag-desc">Скорость исцеления / Мощность исцеления (2 — одно сердце).</span>
+                        <span class="flag-values">секунды / число</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">feed-delay / feed-amount</span>
+                        <span class="flag-desc">Периодичность насыщения / Сколько единиц сытости восстанавливать.</span>
+                        <span class="flag-values">секунды / число</span>
+                    </div>
+                    <div class="flag-item">
+                        <span class="flag-name">price</span>
+                        <span class="flag-desc">Цена на регион.</span>
+                        <span class="flag-values">число</span>
+                    </div>
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+    <!-- СКРИПТ ДЛЯ ТЕМЫ (ВНИЗУ) -->
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        document.documentElement.classList.remove('dark-theme-preload');
+
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeToggleBtn.textContent = '🌙';
+        }
+        
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            if (body.classList.contains('dark-theme')) {
+                themeToggleBtn.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggleBtn.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>
