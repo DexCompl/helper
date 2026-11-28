@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Полезные команды - DexCompl</title>
+    
+    <!-- ЗАЩИТА ОТ ВСПЫШКИ СВЕТЛОЙ ТЕМЫ -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme-preload');
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --sidebar-bg: #f4f4f4;
+            --border-color: #e0e0e0;
+            --hover-color: #e0e0e0;
+            --card-bg: #f9f9f9;
+            --accent-color: #4CAF50;
+            --danger-color: #d32f2f;
+            --warn-color: #f57c00;
+            --cmd-color: #2b78e4;
+        }
+
+        html.dark-theme-preload {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --danger-color: #ff5252;
+            --warn-color: #ffb74d;
+            --cmd-color: #64b5f6;
+        }
+
+        body.dark-theme {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --danger-color: #ff5252;
+            --warn-color: #ffb74d;
+            --cmd-color: #64b5f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- ЛЕВОЕ МЕНЮ --- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar a:hover { background-color: var(--hover-color); }
+        .sidebar a.active { background-color: var(--border-color); font-weight: bold; }
+
+        /* --- ПРАВАЯ ЧАСТЬ --- */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover { background-color: var(--hover-color); }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 { font-size: 3rem; font-weight: bold; letter-spacing: 2px; color: var(--text-color); }
+
+        /* --- КОНТЕНТ --- */
+        .page-content {
+            padding: 40px;
+            line-height: 1.6;
+            max-width: 1000px;
+        }
+
+        .page-content h2 { margin-bottom: 20px; color: var(--text-color); text-align: center; }
+        .page-content h3 { margin-bottom: 15px; margin-top: 25px; color: var(--accent-color); border-bottom: 1px solid var(--border-color); padding-bottom: 5px;}
+
+        /* Стили для аккордеона */
+        details {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        summary {
+            padding: 15px 20px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: var(--sidebar-bg);
+            border-left: 5px solid var(--cmd-color);
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        summary::-webkit-details-marker { display: none; }
+
+        summary::after {
+            content: "+";
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        details[open] summary::after { content: "−"; }
+
+        .details-content {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Стили для команд */
+        .cmd-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .cmd-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .cmd-syntax {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: var(--cmd-color);
+            background-color: rgba(43, 120, 228, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        .cmd-desc {
+            font-size: 15px;
+            margin-top: 5px;
+        }
+
+        .cmd-note {
+            font-size: 13px;
+            color: var(--warn-color);
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        /* Блок с пояснением значков */
+        .legend {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .legend span { font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <a href="index.html">Информация</a>
+        <a href="rules.html">Правила Dexland</a>
+        <a href="commands.html" class="active">Полезные команды</a>
+        <a href="flags.html">Флаги регионов</a>
+        <a href="colors.html">Коды цветов</a>
+        <a href="symbols.html">Разнообразные символы</a>
+        <a href="recovery.html">Восстановление аккаунта</a>
+    </aside>
+
+    <main class="main-content">
+        <button class="theme-toggle" id="theme-toggle" title="Сменить тему">☀️</button>
+
+        <header>
+            <h1>DexCompl</h1>
+        </header>
+        
+        <div class="page-content">
+            <h2>Полезные команды для ЦЕЗАРЕЙ 🌹</h2>
+            
+            <div class="legend">
+                <div><span>🔥</span> — Популярные команды</div>
+                <div><span>⏳</span> — Права на команду убрали временно</div>
+                <div><span>🚫</span> — Права на команду убрали намеренно</div>
+            </div>
+            
+            <!-- РАЗДЕЛ 1: ОСНОВНЫЕ И ИНФОРМАЦИЯ -->
+            <details open>
+                <summary>1. Информация и Модерация</summary>
+                <div class="details-content">
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /hist [Ник]</span>
+                        <div class="cmd-desc">Показывает историю наказаний указанного игрока.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /shist [Ник] [Номер страницы]</span>
+                        <div class="cmd-desc">Посмотреть ВСЕ наказания, выданные данным игроком.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /whois [Ник]</span>
+                        <div class="cmd-desc">Показывает информацию об игроке.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /seen [IP-Игрока]</span>
+                        <div class="cmd-desc">Показывает игроков, которые были замечены с указанным IP.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /checkban [Ник]</span>
+                        <div class="cmd-desc">Проверить бан игрока.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /checkmute [Ник]</span>
+                        <div class="cmd-desc">Проверить мут игрока.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /alts [Ник]</span>
+                        <div class="cmd-desc">Сканировать игрока на твинк-аккаунты.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥🚫 /altstoggle</span>
+                        <div class="cmd-desc">Вкл/выкл автосканер игроков.</div>
+                        <div class="cmd-note">❗ БОЛЬШЕ НЕТ ДОСТУПА ❗</div>
+                    </div>
+                     <div class="cmd-item">
+                        <span class="cmd-syntax">🚫🔥 /nocheatplus inspect [Ник]</span>
+                        <div class="cmd-desc">Показывает полное состояние игрока.</div>
+                        <div class="cmd-note">❗ БОЛЬШЕ НЕТ ДОСТУПА ❗</div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 2: СТРОИТЕЛЬСТВО И WORLDEDIT -->
+            <details>
+                <summary>2. Строительство и WorldEdit</summary>
+                <div class="details-content">
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 //hcyl [id-блока] [радиус] [слои]</span>
+                        <div class="cmd-desc">Создать круг вокруг себя в высоту либо же просто круг (Использовать топорик).</div>
+                        <div class="cmd-note">Пример: //hcyl 5 10 6 — Создал окружность из древесины (5) с радиусом (10) в (6) слоя.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 //up 1</span>
+                        <div class="cmd-desc">Спавнит под тобой блоки (можно больше чем 1). Полезно когда ты на лету.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 //rotate [Градус]</span>
+                        <div class="cmd-desc">Повернуть постройку (Градусы 90, 180, 360). Работает после //copy и //paste.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 //redo</span>
+                        <div class="cmd-desc">Вернуть постройку, которую убрал с помощью //undo.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 //re [ID-старого] [ID-нового]</span>
+                        <div class="cmd-desc">Заменить выделенные блоки другими.</div>
+                        <div class="cmd-note">Пример: //re 1 5:5,5:2 — Заменил камень на два вида древесины.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 //stack</span>
+                        <div class="cmd-desc">Стакать постройки или блоки.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 //move -s 1</span>
+                        <div class="cmd-desc">Подвинуть постройку на 1 блок (Можно больше).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ //fillr [id] [Радиус] [Высота]</span>
+                        <div class="cmd-desc">Создать полу-сферу вокруг себя.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ //outline [ID-блока]</span>
+                        <div class="cmd-desc">Спавн коробки (стены, пол, потолок).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ //drawsel</span>
+                        <div class="cmd-desc">Отображает точки выделения полосками при использовании Топорика.</div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 3: ПРЕДМЕТЫ И ИНВЕНТАРЬ -->
+            <details>
+                <summary>3. Предметы и Инвентарь</summary>
+                <div class="details-content">
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /iname [Текст]</span>
+                        <div class="cmd-desc">Изменить название предмета (Держать в руке).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ /ilore [Текст]</span>
+                        <div class="cmd-desc">Добавить описание предмету (Держать в руке).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ /setglow</span>
+                        <div class="cmd-desc">Сделать предмет светящимся (Держать в руке).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ /hideflags</span>
+                        <div class="cmd-desc">Скрыть атрибуты предмета в руке (урон, зачарования).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /playerh [Ник]</span>
+                        <div class="cmd-desc">Получить голову любого игрока.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /echest [Ник]</span>
+                        <div class="cmd-desc">Взаимодействовать с Эндер-сундуком игрока.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /invsee [Ник]</span>
+                        <div class="cmd-desc">Взаимодействовать с инвентарём игрока. (Брать/класть можно у донатеров с «Помощник» и ниже).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /effect give [Ник] [эффект] [время] [сила] [скрыть]</span>
+                        <div class="cmd-desc">Выдать различные эффекты.</div>
+                        <div class="cmd-note">Пример: /effect give GigaMana minecraft:speed 100 4 true</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /eco set [Ник] 99999999999999</span>
+                        <div class="cmd-desc">Выдает максимальное количество денег на сервере.</div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 4: ТЕЛЕПОРТАЦИЯ И РЕГИОНЫ -->
+            <details>
+                <summary>4. Телепортация и Регионы</summary>
+                <div class="details-content">
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /rg define [Название] [Ник Игрока]</span>
+                        <div class="cmd-desc">Создать регион внутри Главного региона.</div>
+                        <div class="cmd-note">Обязательно выделить точки в Главном регионе. Флаги главного действуют на внутренний.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /rg list -p [Ник]</span>
+                        <div class="cmd-desc">Показывает все регионы игрока.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /rgnear [радиус]</span>
+                        <div class="cmd-desc">Просмотр регионов поблизости.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /protect add/remove [Название региона]</span>
+                        <div class="cmd-desc">Включить/выключить защиту для региона.</div>
+                        <div class="cmd-note">❗ Защита не действует на Властелинов и Цезарей ❗</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /tp [Ник] [Ник]</span>
+                        <div class="cmd-desc">Телепортирует игрока к другому игроку.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /tpohere [Ник]</span>
+                        <div class="cmd-desc">Телепортирует игрока к вам (даже если он выключил телепортации).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /tppos [Координаты]</span>
+                        <div class="cmd-desc">Телепортирует по указанным координатам.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /mywarps</span>
+                        <div class="cmd-desc">Показывает только все ТВОИ созданные варпы.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /delwarp [Название]</span>
+                        <div class="cmd-desc">Удалить варп.</div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 5: НПС И РАЗВЛЕЧЕНИЯ -->
+            <details>
+                <summary>5. НПС, Боксы и Развлечения</summary>
+                <div class="details-content">
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /npc create</span>
+                        <div class="cmd-desc">Создать своего NPC в своём регионе.</div>
+                        <div class="cmd-note">Дополнение: /npc settext, /npc skin, /npc addcmd, /npc settings</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /sbox create [Название]</span>
+                        <div class="cmd-desc">Создать бокс с вашей постройкой, который можно дать игроку.</div>
+                        <div class="cmd-note">Выделить топориком. ❗ В один бокс помещается не более 100 000 блоков ❗</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /jm</span>
+                        <div class="cmd-desc">Большой выбор сообщений, которые игроки увидят при твоём заходе на портал.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /glowcolor</span>
+                        <div class="cmd-desc">Сменить себе цвет свечения скина.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ /suits</span>
+                        <div class="cmd-desc">Супер-Костюмы для развлечений.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ /emotes</span>
+                        <div class="cmd-desc">Анимированные эмоции для развлечений.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ /furniture</span>
+                        <div class="cmd-desc">Реалистичная мебель: елка, столы, стулья и др.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ /emoji</span>
+                        <div class="cmd-desc">Смайлики в чат (например, :60: заменится на ❤).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ /holo</span>
+                        <div class="cmd-desc">Создание своих голограмм (текст, предметы или мобы).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ /dblock</span>
+                        <div class="cmd-desc">Превращение в блок (от доната Властелина).</div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 6: ПРОЧЕЕ -->
+            <details>
+                <summary>6. Прочие команды</summary>
+                <div class="details-content">
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /list owner/blaze/enigma/opka</span>
+                        <div class="cmd-desc">Посмотреть отдельный список игроков по привилегиям.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ /customtext stafflist</span>
+                        <div class="cmd-desc">Показывает игроков группы STAFF, которые онлайн.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /msgtoggle [Ник]</span>
+                        <div class="cmd-desc">Запретить писать в ЛС себе или игроку.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /ptime [Время] [Ник]</span>
+                        <div class="cmd-desc">Поставить игроку либо себе время на сервере.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /pweather [Погода] [Ник]</span>
+                        <div class="cmd-desc">Поставить игроку либо себе погоду на сервере.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">~ /setting</span>
+                        <div class="cmd-desc">Панель управления некоторыми функциями.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /chatcolor</span>
+                        <div class="cmd-desc">Много способов для изменения цвета текста в чате.</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /sign set [строка] [текст]</span>
+                        <div class="cmd-desc">Написать на табличке (смотреть на табличку).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /inspect</span>
+                        <div class="cmd-desc">Проверить, кто взаимодействовал с блоком (использовать кирку).</div>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-syntax">🔥 /co i</span>
+                        <div class="cmd-desc">Узнать, кто ломал/ставил блок (кликай по блоку).</div>
+                    </div>
+                </div>
+            </details>
+
+            <div style="text-align: center; margin-top: 40px; padding: 20px; background-color: var(--card-bg); border-radius: 8px; border: 1px solid var(--border-color);">
+                <p style="font-size: 18px; font-weight: bold; color: var(--danger-color);">❗️ Большая просьба, Ребятки, не злоупотребляйте данными командами ❗️</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- СКРИПТ ДЛЯ ТЕМЫ (ВНИЗУ) -->
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        document.documentElement.classList.remove('dark-theme-preload');
+
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeToggleBtn.textContent = '🌙';
+        }
+        
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            if (body.classList.contains('dark-theme')) {
+                themeToggleBtn.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggleBtn.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>
