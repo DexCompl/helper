@@ -25,7 +25,6 @@
             --warn-color: #f57c00;
         }
 
-        /* Применяем цвета темной темы еще до загрузки body */
         html.dark-theme-preload {
             --bg-color: #1e1e1e;
             --text-color: #ffffff;
@@ -38,7 +37,6 @@
             --warn-color: #ffb74d;
         }
 
-        /* Применяем цвета к body, когда класс добавляется к body */
         body.dark-theme {
             --bg-color: #1e1e1e;
             --text-color: #ffffff;
@@ -194,6 +192,7 @@
             font-style: italic;
             margin-top: 5px;
         }
+
     </style>
 </head>
 <body>
@@ -379,9 +378,28 @@
                     </div>
 
                     <div class="rule-item">
+                        <span class="rule-title">4.20 Необоснованный разбан/размут</span><br>
+                        Необоснованный разбан/размут игроков. Снятие корректных варнов.<br>
+                        <span class="rule-punishment">Наказание: Бан на 8 часов / Бан на 1 час.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.21 Некорректный мут/кик/варн/jail</span><br>
+                        Некорректный мут/кик/варн/jail.<br>
+                        <span class="rule-punishment">Наказание: Бан на 2 часа.</span>
+                    </div>
+
+                    <div class="rule-item">
                         <span class="rule-title">4.22 Порча спавна</span><br>
                         Порча/изменение/снос спавна, в т.ч. его поджигание.<br>
                         <span class="rule-punishment">Наказание: Перманентный бан / Снятие доната.</span>
+                        <div class="note-text">— Примечание: Выдавать наказание могут только МОДЕРАТОРЫ и АДМИНИСТРАТОРЫ.</div>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.23 Подделка сообщений</span><br>
+                        Подделка сообщений игроков, администрации или сервера с целью обмана, провокации конфликтов.<br>
+                        <span class="rule-punishment">Наказание: Бан на 2 дня → Бан на 5 дней.</span>
                     </div>
 
                     <div class="rule-item">
@@ -391,21 +409,43 @@
                     </div>
 
                     <div class="rule-item">
+                        <span class="rule-title">4.25 Оскорбление модерации</span><br>
+                        Оскорбление модерации. Провокация.<br>
+                        <span class="rule-punishment">Наказание: Мут на 3 часа (оскорбление) / /warn → Бан на 5 часов (провокация).</span>
+                    </div>
+
+                    <div class="rule-item">
                         <span class="rule-title">4.26 Обход наказаний</span><br>
                         Обход мута или других наказаний через /warn, твинк-аккаунты и т.д.<br>
                         <span class="rule-punishment">Наказание: Бан на 6 часов → Бан на 12 часов → Бан на 1 день.</span>
                     </div>
-                    
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.27 Вредительство и дезинформация</span><br>
+                        Вредительство, намеренная дезинформация с целью причинения ущерба, массовые нарушения.<br>
+                        <span class="rule-punishment">Наказание: Бан на 7 дней → Бан на 14 дней → Бан на 30 дней. (При нарушениях в чате: Мут на 7 дней → Мут на 14 дней).</span>
+                        <div class="note-text">— Примечание: Выдавать наказание могут только МОДЕРАТОРЫ и АДМИНИСТРАТОРЫ.</div>
+                    </div>
+
                     <div class="rule-item">
                         <span class="rule-title">4.28 Разглашение личной информации</span><br>
                         Разглашение личной информации (адресов, фото, IP, номеров телефонов).<br>
                         <span class="rule-punishment">Наказание: Бан на 7 дней → Навсегда.</span>
+                        <div class="note-text">— Примечание: Выдавать наказание могут только МОДЕРАТОРЫ и АДМИНИСТРАТОРЫ.</div>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.29 Накрутка клана</span><br>
+                        Массовая рассылка приглашений в клан, накрутка статистики убийств для КДР.<br>
+                        <span class="rule-punishment">Наказание: /warn → Бан на 3 дня → удаление клана.</span>
+                        <div class="note-text">— Примечание: Выдавать наказание могут только МОДЕРАТОРЫ и АДМИНИСТРАТОРЫ.</div>
                     </div>
 
                     <div class="rule-item">
                         <span class="rule-title">4.30 Накрутка статистики</span><br>
                         Накрутка игровой статистики (паркур, убийства) для продвижения в топах.<br>
                         <span class="rule-punishment">Наказание: /warn → Бан на 3 дня. Повторно: обнуление статы и бан до 7 дней.</span>
+                        <div class="note-text">— Примечание: Выдавать наказание могут только МОДЕРАТОРЫ и АДМИНИСТРАТОРЫ.</div>
                     </div>
 
                     <div class="note-text" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
@@ -423,7 +463,6 @@
         const themeToggleBtn = document.getElementById('theme-toggle');
         const body = document.body;
         
-        // Убираем временный класс, так как основной скрипт уже подхватил тему
         document.documentElement.classList.remove('dark-theme-preload');
 
         const currentTheme = localStorage.getItem('theme');
