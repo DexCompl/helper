@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Разнообразные символы - DexCompl</title>
+    
+    <!-- ЗАЩИТА ОТ ВСПЫШКИ СВЕТЛОЙ ТЕМЫ -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme-preload');
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --sidebar-bg: #f4f4f4;
+            --border-color: #e0e0e0;
+            --hover-color: #e0e0e0;
+            --card-bg: #f9f9f9;
+            --accent-color: #4CAF50;
+            --warn-color: #f57c00;
+            --sym-bg: #e8f5e9;
+            --sym-hover: #c8e6c9;
+        }
+
+        html.dark-theme-preload {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --warn-color: #ffb74d;
+            --sym-bg: #1b3320;
+            --sym-hover: #244a2b;
+        }
+
+        body.dark-theme {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --warn-color: #ffb74d;
+            --sym-bg: #1b3320;
+            --sym-hover: #244a2b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- ЛЕВОЕ МЕНЮ --- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar a:hover { background-color: var(--hover-color); }
+        .sidebar a.active { background-color: var(--border-color); font-weight: bold; }
+
+        /* --- ПРАВАЯ ЧАСТЬ --- */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover { background-color: var(--hover-color); }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 { font-size: 3rem; font-weight: bold; letter-spacing: 2px; color: var(--text-color); }
+
+        /* --- КОНТЕНТ --- */
+        .page-content {
+            padding: 40px;
+            line-height: 1.6;
+            max-width: 1000px;
+        }
+
+        .page-content h2 { margin-bottom: 15px; color: var(--text-color); text-align: center; }
+        .page-content h3 { margin-bottom: 10px; margin-top: 25px; color: var(--accent-color); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
+
+        .info-box {
+            background-color: rgba(76, 175, 80, 0.1);
+            border-left: 5px solid var(--accent-color);
+            padding: 15px 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        /* Контейнер для символов */
+        .symbols-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Отдельный символ */
+        .symbol-item {
+            background-color: var(--sym-bg);
+            border: 1px solid var(--border-color);
+            font-size: 22px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s, background-color 0.2s;
+            position: relative;
+        }
+
+        .symbol-item:hover {
+            background-color: var(--sym-hover);
+            transform: scale(1.1);
+        }
+
+        /* Всплывающая подсказка "Скопировано!" */
+        .tooltip {
+            position: fixed;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .tooltip.show { opacity: 1; }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <a href="index.html">Информация</a>
+        <a href="rules.html">Правила Dexland</a>
+        <a href="commands.html">Полезные команды</a>
+        <a href="flags.html">Флаги регионов</a>
+        <a href="colors.html">Коды цветов</a>
+        <a href="symbols.html" class="active">Разнообразные символы</a>
+        <a href="recovery.html">Восстановление аккаунта</a>
+    </aside>
+
+    <main class="main-content">
+        <button class="theme-toggle" id="theme-toggle" title="Сменить тему">☀️</button>
+
+        <header>
+            <h1>DexCompl</h1>
+        </header>
+        
+        <div class="page-content">
+            <h2>Разнообразные символы ✔</h2>
+            
+            <div class="info-box">
+                <strong>💡 Подсказка:</strong> Нажми на любой символ, чтобы мгновенно скопировать его в буфер обмена. Вставь его в игру или чат!
+            </div>
+
+            <h3>Популярные символы</h3>
+            <div class="symbols-container" id="popular">
+                <!-- Символы будут добавлены скриптом ниже -->
+            </div>
+
+            <h3>Специальные символы</h3>
+            <div class="symbols-container" id="special"></div>
+
+            <h3>Символы любви и смайлики</h3>
+            <div class="symbols-container" id="love"></div>
+
+            <h3>Стрелки и графические символы</h3>
+            <div class="symbols-container" id="arrows"></div>
+
+            <h3>Музыка и погода</h3>
+            <div class="symbols-container" id="music"></div>
+
+            <h3>Шахматы и покер</h3>
+            <div class="symbols-container" id="games"></div>
+
+            <h3>Знаки Зодиака и числа</h3>
+            <div class="symbols-container" id="zodiac"></div>
+
+            <h3>Меню и дроби</h3>
+            <div class="symbols-container" id="menu"></div>
+
+            <h3>Всякое (Красивые комбинации)</h3>
+            <div style="background-color: var(--card-bg); padding: 20px; border-radius: 8px; font-size: 20px; line-height: 2; word-break: break-all;">
+                ♡❥𝓪❦♥ও𝓲『𝓮۵ღ𝓻☽𝓸☼』➤ෆ†✞⋆❀𝓵𝓢»ɞ𝓐「」✰𝓶𝓼❁⊱⚘𝓷𝓾⊰♱★✧꧂𝓭𝓜→♍︎《✦༄【❤☻♫♬𝄞☆✩⭒♕𝔂𝓡↴♈︎♋︎♏︎𖥸☾》】〖🎔ʚ♪✶✉꧁𝓓𝓔𝓛𝓁⤷♓︎⸻₂❝❞ツ✆♛❃𝓬𝓽𝓿𝒶𝒾☾☽↳♐︎♒︎«⸥²𒆩დシッ✭⛧✎✉✿𝓫𝓒𝓕𝓗𝒜↓➥⃤◌♌︎𓃠𓆙ꞏ┆₁♔❈ꕥ❅𝓚𝓝𝓟𝓣➞↺♉︎♊︎☯❝☞・⎼┊〗›⸍⸢╮❜❣𐐂⍨†⚝﹡♤❉☘©𝓯𝓱𝔀𝓘𝓥ℳ⇝⤹●♑♑︎❜❞𓃱𓆉🜚♀✔⸺║〔ℒ┃⟡❛∞❧♩𝅘𝅥𝅮〤℡♢🃏✾𝓳𝓴𝓹𝓑𝓖
+            </div>
+
+            <p style="margin-top: 30px; font-size: 14px; color: var(--warn-color); text-align: right;">
+                Взято с сайта <a href="https://ru.piliapp.com/symbol/" target="_blank" style="color: var(--accent-color); font-weight: bold;">piliapp.com</a>
+            </p>
+
+        </div>
+    </main>
+
+    <!-- Всплывающая подсказка -->
+    <div class="tooltip" id="tooltip">Скопировано!</div>
+
+    <!-- СКРИПТ ДЛЯ ТЕМЫ И СИМВОЛОВ -->
+    <script>
+        // --- 1. ЛОГИКА ДЛЯ ТЕМЫ ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        document.documentElement.classList.remove('dark-theme-preload');
+
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeToggleBtn.textContent = '🌙';
+        }
+        
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            if (body.classList.contains('dark-theme')) {
+                themeToggleBtn.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggleBtn.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // --- 2. ЛОГИКА ДЛЯ СИМВОЛОВ ---
+        const symbolData = {
+            popular: "ღ • ⁂ € ™ ↑ → ↓ ⇝ √ ∞ ░ ▲ ▶ ◀ ● ☀ ☁ ☂ ☃ ☄ ★ ☆ ☉ ☐ ☑ ☎ ☚ ☛ ☜ ☝ ☞ ☟ ☠ ☢ ☣ ☪ ☮ ☯ ☸ ☹ ☺ ☻ ☼ ☽ ☾ ♔ ♕ ♖ ♗ ♘ ♚ ♛ ♜ ♝ ♞ ♟ ♡ ♨ ♩ ♪ ♫ ♬ ✈ ✉ ✍ ✎ ✓ ✔ ✘ ✚ ✞ ✟ ✠ ✡ ✦ ✧ ✩ ✪ ✮ ✯ ✹ ✿ ❀ ❁ ❂ ❄ ❅ ❆ ❝ ❞ ❣ ❤ ❥ ❦ ➤",
+            special: "♔♕♖♗♘♙♚♛♜♝♞♟ ♩♪♫♬♭♮♯𝄞𝄡𝄢𝄪𝄫🎵🎶🎼𓏢 ϟ☀☁☂☃☄☉☼☽☾♁♨❄❅❆༄࿓ ‱№℗℠℡℻℀℁℅℆⅍⌚⌛☊☎☏✁✂✃✄✆✇✈✉✍✎✏✐✑✒™©®‰§¶𓍝 ⏎⇧⏏⌂⌘☢☣⎋⌥⌫ᵁᴴᴰ⌖ ☰≡Ξ㊂≣⁝⋮︙⦙⁞⋯…∷▲▼▶ ♓♒♑♐♏♎♍♌♋♊♉♈☉☽☿♀ ˇ∛∜⍻☐☑☒✓✔✗✘༝྾∨√",
+            love: "♡♢♤♧♣♦♥♠ ⚀⚁⚂⚃⚄⚅ ♡♥❣❤❦❧❥☙დღ ☹☺☻☿♀⚣⚤⚥⚦⚧⚨♂⚢〠ヅツ㋡웃유üت⍢⍨⚇⚉𓁷𓁶𓂈𓂉𓂊𓂎𓂀𓁿𓁾𓁽𓁼𓁻𓁺𓁹 ☚☛☜☝☞☟✌✍𓂬𓂩𓂨𓂷𓂭𓂝𓂡𓂦𓃈⍝",
+            arrows: "↕↖↗↘↙↚↛↜↝↞↟↠↡↢↣↤↥↦↧↨↩↪↫↬↭↮↯↰↱↲↳↴↶↷↸↹↺↻⟳↼↽↾↿⇀⇁⇂⇃⇄⇅⇆⇇⇈⇉⇊⇋⇌⇍⇎⇏⇕⇖⇗⇘⇙⇚⇛⇜⇝⇞⇟⇠⇡⇢⇣⇤⇥⇦⇧⇨⇩⇪⌅⌆⌤⏎▶☇☈➔➘➙➚➛➜➝➞➟➠➡➢➣➤➥➦➧➨➩➪➫➬➭➮➯➱➲➳➴➵➶➷➸➹➺➻➼➽➾⤴⤵↵↓↔←→↑⍇⍈⍐⍗⇫⇬⇭⇮⇯⇰⇱⇲⇳⇴⇵⇶⇷⇸⇹⇺⇻⇼⇽⇾⇿⇐⇑⇒⇓⇔ ∎⊞⊟⊠⊡⋄⎔⎚▀▁▂▃▄▅▆▇█▉▊▋▋▌▍▎▏▐░▒▓▔■□▢▣▤▥▦▧▨▩▪▫▬▭▮▯▰▱◆◇◈◘◙◚◛◧◨◩◪◫☖☗⭔⭓❏❐❑❒❖❘❙❚◊⌑▖▗▘▙▚▛▜▝▞▟◰◱◲◳ ⊿▲△▴▵▶▷▸▹►▻▼▽▾▿◀◁◂◃◄◅◢◣◤◥◬◭◮◸◹◺◿∇∆",
+            music: "♩♪♫♬♭♮♯𝄞𝄡𝄢𝄪𝄫🎵🎶🎼𓏢 ϟ☀☁☂☃☄☉☼☽☾♁♨❄❅❆༄࿓",
+            games: "♔♕♖♗♘♙♚♛♜♝♞♟ ♡♢♤♧♣♦♥♠ ⚀⚁⚂⚃⚄⚅",
+            zodiac: "♓♒♑♐♏♎♍♌♋♊♉♈☉☽☿♀ ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪⅫⅰⅱⅲⅳⅴⅵⅶⅷⅸⅹⅺⅻ⓪①②③④⑤⑥⑦⑧⑨⑩⓵⓶⓷⓸⓹⓺⓻⓼⓽⓾⑴⑵⑶⑷⑸⑹⑺⑻⑼⑽⓿❶❷❸❹❺❻❼❽❾❿㈠㈡㈢㈣㈤㈥㈦㈧㈨㈩㊀㊁㊂㊃㊄㊅㊆㊇㊈㊉０１２３４５６７８９ ½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅐⅛⅜⅝⅞⅑⅒↉⅟",
+            menu: "☰≡Ξ㊂≣⁝⋮︙⦙⁞⋯…∷▲▼▶ ½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅐⅛⅜⅝⅞⅑⅒↉⅟"
+        };
+
+        // Функция для создания символов
+        function renderSymbols(containerId, symbolsString) {
+            const container = document.getElementById(containerId);
+            const symbolsArray = symbolsString.split(' ');
+            
+            symbolsArray.forEach(sym => {
+                if(sym.trim() === '') return;
+                const span = document.createElement('span');
+                span.className = 'symbol-item';
+                span.textContent = sym;
+                span.title = 'Нажми, чтобы скопировать';
+                
+                // Логика копирования
+                span.addEventListener('click', (e) => {
+                    navigator.clipboard.writeText(sym).then(() => {
+                        showTooltip(e.clientX, e.clientY);
+                    });
+                });
+                
+                container.appendChild(span);
+            });
+        }
+
+        // Функция для показа подсказки
+        function showTooltip(x, y) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = y + 'px';
+            tooltip.classList.add('show');
+            
+            setTimeout(() => {
+                tooltip.classList.remove('show');
+            }, 1000);
+        }
+
+        // Рендерим все категории
+        renderSymbols('popular', symbolData.popular);
+        renderSymbols('special', symbolData.special);
+        renderSymbols('love', symbolData.love);
+        renderSymbols('arrows', symbolData.arrows);
+        renderSymbols('music', symbolData.music);
+        renderSymbols('games', symbolData.games);
+        renderSymbols('zodiac', symbolData.zodiac);
+        renderSymbols('menu', symbolData.menu);
+
+    </script>
+</body>
+</html>
