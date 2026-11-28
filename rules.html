@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Правила Dexland - DexCompl</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --sidebar-bg: #f4f4f4;
+            --border-color: #e0e0e0;
+            --hover-color: #e0e0e0;
+            --card-bg: #f9f9f9;
+            --accent-color: #4CAF50;
+            --danger-color: #d32f2f;
+            --warn-color: #f57c00;
+        }
+
+        body.dark-theme {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --danger-color: #ff5252;
+            --warn-color: #ffb74d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- ЛЕВОЕ МЕНЮ --- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar a:hover { background-color: var(--hover-color); }
+        .sidebar a.active { background-color: var(--border-color); font-weight: bold; }
+
+        /* --- ПРАВАЯ ЧАСТЬ --- */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover { background-color: var(--hover-color); }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 { font-size: 3rem; font-weight: bold; letter-spacing: 2px; color: var(--text-color); }
+
+        /* --- КОНТЕНТ --- */
+        .page-content {
+            padding: 40px;
+            line-height: 1.6;
+            max-width: 1000px;
+        }
+
+        .page-content h2 { margin-bottom: 20px; color: var(--text-color); text-align: center; }
+
+        /* Стили для аккордеона (спойлеров) */
+        details {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        summary {
+            padding: 15px 20px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: var(--sidebar-bg);
+            border-left: 5px solid var(--accent-color);
+            list-style: none; /* Убираем стандартный треугольник */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        summary::-webkit-details-marker { display: none; } /* Убираем треугольник в Chrome */
+
+        summary::after {
+            content: "+";
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        details[open] summary::after { content: "−"; }
+
+        .details-content {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Стили для самих правил */
+        .rule-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .rule-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .rule-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .rule-punishment {
+            font-size: 14px;
+            color: var(--danger-color);
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .note-text {
+            font-size: 14px;
+            color: var(--warn-color);
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <a href="index.html">Информация</a>
+        <a href="rules.html" class="active">Правила Dexland</a>
+        <a href="commands.html">Полезные команды</a>
+        <a href="flags.html">Флаги регионов</a>
+        <a href="colors.html">Коды цветов</a>
+        <a href="symbols.html">Разнообразные символы</a>
+        <a href="recovery.html">Восстановление аккаунта</a>
+    </aside>
+
+    <main class="main-content">
+        <button class="theme-toggle" id="theme-toggle" title="Сменить тему">☀️</button>
+
+        <header>
+            <h1>DexCompl</h1>
+        </header>
+        
+        <div class="page-content">
+            <h2>Правила проекта Dexland</h2>
+            <p style="text-align: center; margin-bottom: 30px;">Нажмите на раздел, чтобы раскрыть список правил. Незнание правил не освобождает от ответственности.</p>
+            
+            <!-- РАЗДЕЛ 1 -->
+            <details open>
+                <summary>1. Общие правила проекта</summary>
+                <div class="details-content">
+                    <div class="rule-item"><span class="rule-title">1.1</span> Незнание правил не освобождает вас от ответственности.</div>
+                    <div class="rule-item"><span class="rule-title">1.2</span> Регистрируясь на сервере, вы соглашаетесь со всеми правилами, предоставленными в этом списке, правами и обязанностями.</div>
+                    <div class="rule-item"><span class="rule-title">1.3</span> Передача/продажа аккаунтов сторонним лицам строго запрещена.</div>
+                    <div class="rule-item"><span class="rule-title">1.4</span> Администрация оставляет за собой право в одностороннем порядке изменять текущие правила без уведомления пользователей посредством группы VK.</div>
+                    <div class="rule-item"><span class="rule-title">1.5</span> Администрация ведет управление игровыми процессами и всем проектом — исключительно по своему усмотрению.</div>
+                    <div class="rule-item"><span class="rule-title">1.6</span> Так как не всегда удается определить нарушение правил пользователем, окончательное решение остается за Администраторами проекта.</div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 2 -->
+            <details>
+                <summary>2. Права и обязанности игроков</summary>
+                <div class="details-content">
+                    <div class="rule-item"><span class="rule-title">2.1</span> Игрок полностью отвечает за надежность своего пароля и доступа к аккаунту.</div>
+                    <div class="rule-item"><span class="rule-title">2.2</span> Игроки, имеющие различные привилегии на сервере, ничем не отличаются от обычных игроков, кроме привилегий, и полностью подчиняются правилам проекта.</div>
+                    <div class="rule-item"><span class="rule-title">2.3</span> В случае отсутствия игрока более 3-х календарных месяцев, все его данные (постройки, аккаунт и др.) могут быть удалены без оповещения. <em>(Если у вас есть донат, ничего не пропадет)</em>.</div>
+                    <div class="rule-item"><span class="rule-title">2.4</span> Только персонал проекта имеет право вызывать игроков на проверку на использование читов.</div>
+                    <div class="rule-item"><span class="rule-title">2.5</span> Игроку строго запрещается любым способом (чат, книги, картинки и др.) распространять информацию, нарушающую законодательство Российской Федерации.</div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 3 -->
+            <details>
+                <summary>3. Права и обязанности администрации</summary>
+                <div class="details-content">
+                    <div class="rule-item"><span class="rule-title">3.1</span> Администрация вправе выбирать длительность наказания на свое усмотрение.</div>
+                    <div class="rule-item"><span class="rule-title">3.2</span> Администрация не несет ответственности за аккаунты игроков, включая социальную инженерию, вирусы, подбор пароля и т.п. <br><em>* В случае компрометации аккаунта пользователь может обратиться в поддержку для восстановления доступа.</em></div>
+                    <div class="rule-item"><span class="rule-title">3.4</span> Администрация вправе выбирать длительность и вид наказания на свое усмотрение.</div>
+                    <div class="rule-item"><span class="rule-title">3.5</span> Толкование правил сайта осуществляется только главными Администраторами. Любые другие попытки истолковать правила в пользу любой из сторон признаются некорректными.</div>
+                    <div class="rule-item"><span class="rule-title">3.6</span> Администрация вправе забирать привилегии / отказывать в обслуживании игрокам за многочисленные нарушения правил.</div>
+                    <div class="rule-item"><span class="rule-title">3.7</span> Администрация имеет право не объяснять причины блокировки аккаунтов, если правила сервера были неоднократно нарушены и вы получили бан.</div>
+                    <div class="rule-item"><span class="rule-title">3.8</span> Администратор вправе изъять у пользователя любое имущество, если пользователь не сможет доказать его честное (без использования читов) происхождение.</div>
+                </div>
+            </details>
+
+            <!-- РАЗДЕЛ 4 -->
+            <details>
+                <summary>4. Наказания за нарушения</summary>
+                <div class="details-content">
+                    
+                    <div class="rule-item">
+                        <span class="rule-title">4.1 Оскорбительные ники/префиксы</span><br>
+                        Оскорбительные, провокационные или непристойные префиксы/суффиксы/изменённые ники/названия кланов.<br>
+                        <span class="rule-punishment">Наказание: /warn с требованием изменения → Бан на 1 день → Бан на 7 дней. Создание нового аккаунта с оскорбительным ником: Бан навсегда.</span>
+                        <div class="note-text">— Примечание: Выдавать наказание могут только МОДЕРАТОРЫ и АДМИНИСТРАТОРЫ.</div>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.2 Гриферство</span><br>
+                        Намеренная порча, изменение или разрушение чужих построек (выше Премиума).<br>
+                        <span class="rule-punishment">Наказание: Бан на 8 часов → Бан на 1 день.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.3 Подстрекательство</span><br>
+                        Подстрекательство игроков к нарушению правил сервера, в том числе намеренные провокации.<br>
+                        <span class="rule-punishment">Наказание: /warn → Мут на 4 часа → Мут на 8 часов.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.4 Непристойные постройки</span><br>
+                        Создание непристойных или оскорбительных построек, контент 18+, лаг-машины.<br>
+                        <span class="rule-punishment">Наказание: Снос постройки + бан на 2 дня.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.5 Заманивание в ловушки</span><br>
+                        Намеренное заманивание игроков в запрещённые ловушки с целью убийства или потери ресурсов.<br>
+                        <span class="rule-punishment">Наказание: Удаление ловушки + Бан на 8 часов → Бан на 1 день.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.6 Флуд, спам, оскорбления</span><br>
+                        Флуд, спам, капс, оскорбления, угрозы, провокации, попрошайничество в любом чате.<br>
+                        <span class="rule-punishment">Наказание: Флуд/спам: /warn → Мут на 1 час. Оскорбления/провокации: /warn → Мут на 2 часа → Мут на 5 часов.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.7 Взлом аккаунтов</span><br>
+                        Продажа/передача аккаунтов, взлом или попытка взлома чужих аккаунтов.<br>
+                        <span class="rule-punishment">Наказание: Перманентный бан / Бан IP.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.8 Препятствие игре</span><br>
+                        Препятствие нормальной игре.<br>
+                        <span class="rule-punishment">Наказание: /warn, /kick или /jail → Бан на 1 час.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.9 Необоснованное наказание</span><br>
+                        Необоснованное/некорректное наказание игроков.<br>
+                        <span class="rule-punishment">Наказание: Бан на 8 часов.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.10 Оскорбление администрации</span><br>
+                        Оскорбление проекта и его администрации.<br>
+                        <span class="rule-punishment">Наказание: Мут на 12 часов → Бан на 2 дня.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.11 Разжигание вражды</span><br>
+                        Разжигание межнациональной, религиозной и иной вражды, призывы к дискриминации.<br>
+                        <span class="rule-punishment">Наказание: Мут на 1 день → Бан на 3 дня → Бан на 7 дней.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.12 Ложные доказательства</span><br>
+                        Введение администрации в заблуждение, подделка скриншотов и записей.<br>
+                        <span class="rule-punishment">Наказание: Бан на 3 дня → Бан на 7 дней. (При серьезных последствиях — Бан на 30 дней).</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.13 Препятствие модерации</span><br>
+                        Препятствие работе модерации.<br>
+                        <span class="rule-punishment">Наказание: /warn, /kick или /jail → Бан на 1 день.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.14 Выдача себя за админа</span><br>
+                        Выдача себя за модерацию, администрацию или других представителей проекта.<br>
+                        <span class="rule-punishment">Наказание: /warn, Бан на 2 дня → Бан на 5 дней.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.15 Злоупотребление донатом</span><br>
+                        Использование возможностей доната в корыстных целях (PvP, полёт, команды и т.д.).<br>
+                        <span class="rule-punishment">Наказание: /warn → Бан на 2 дня.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.16 Реклама других проектов</span><br>
+                        Реклама других проектов в любом виде.<br>
+                        <span class="rule-punishment">Наказание: Перманентный бан / Бан по IP.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.17 Продажа сторонних ресурсов</span><br>
+                        Продажа аккаунтов других игр, лицензий, цифровых товаров и т.д.<br>
+                        <span class="rule-punishment">Наказание: Мут на 6 часов.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.18 Мошенничество</span><br>
+                        Мошенничество и сделки, связанные с продажей игровых ценностей за реальные деньги.<br>
+                        <span class="rule-punishment">Наказание: Перманентный бан / Бан по IP.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.19 Читы</span><br>
+                        Использование читов. Игрокам запрещено вызывать других игроков на проверку читов.<br>
+                        <span class="rule-punishment">Наказание: Бан на 30 дней (за читы) / Бан на 1 день (за вызов на проверку).</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.22 Порча спавна</span><br>
+                        Порча/изменение/снос спавна, в т.ч. его поджигание.<br>
+                        <span class="rule-punishment">Наказание: Перманентный бан / Снятие доната.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.24 Оскорбление родных</span><br>
+                        Затрагивание в оскорбительной форме семьи/родных, национальности, языка или религий.<br>
+                        <span class="rule-punishment">Наказание: Мут на 6 часов; в грубой форме — на 12 часов.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.26 Обход наказаний</span><br>
+                        Обход мута или других наказаний через /warn, твинк-аккаунты и т.д.<br>
+                        <span class="rule-punishment">Наказание: Бан на 6 часов → Бан на 12 часов → Бан на 1 день.</span>
+                    </div>
+                    
+                    <div class="rule-item">
+                        <span class="rule-title">4.28 Разглашение личной информации</span><br>
+                        Разглашение личной информации (адресов, фото, IP, номеров телефонов).<br>
+                        <span class="rule-punishment">Наказание: Бан на 7 дней → Навсегда.</span>
+                    </div>
+
+                    <div class="rule-item">
+                        <span class="rule-title">4.30 Накрутка статистики</span><br>
+                        Накрутка игровой статистики (паркур, убийства) для продвижения в топах.<br>
+                        <span class="rule-punishment">Наказание: /warn → Бан на 3 дня. Повторно: обнуление статы и бан до 7 дней.</span>
+                    </div>
+
+                    <div class="note-text" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                        <strong>Примечание:</strong> Наказания через «→» усиливаются при повторных нарушениях в течение 90 дней. Если за 90 дней игрок не нарушал аналогичное правило, отсчёт начинается заново. Перманентные баны не сбрасываются.
+                    </div>
+
+                </div>
+            </details>
+
+        </div>
+    </main>
+
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeToggleBtn.textContent = '🌙';
+        }
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            if (body.classList.contains('dark-theme')) {
+                themeToggleBtn.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggleBtn.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>
