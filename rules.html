@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Правила Dexland - DexCompl</title>
+    
+    <!-- ЗАЩИТА ОТ ВСПЫШКИ СВЕТЛОЙ ТЕМЫ -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme-preload');
+        }
+    </script>
+
     <style>
         :root {
             --bg-color: #ffffff;
@@ -17,6 +25,20 @@
             --warn-color: #f57c00;
         }
 
+        /* Применяем цвета темной темы еще до загрузки body */
+        html.dark-theme-preload {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --danger-color: #ff5252;
+            --warn-color: #ffb74d;
+        }
+
+        /* Применяем цвета к body, когда класс добавляется к body */
         body.dark-theme {
             --bg-color: #1e1e1e;
             --text-color: #ffffff;
@@ -111,7 +133,7 @@
 
         .page-content h2 { margin-bottom: 20px; color: var(--text-color); text-align: center; }
 
-        /* Стили для аккордеона (спойлеров) */
+        /* Стили для аккордеона */
         details {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -127,13 +149,13 @@
             cursor: pointer;
             background-color: var(--sidebar-bg);
             border-left: 5px solid var(--accent-color);
-            list-style: none; /* Убираем стандартный треугольник */
+            list-style: none;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        summary::-webkit-details-marker { display: none; } /* Убираем треугольник в Chrome */
+        summary::-webkit-details-marker { display: none; }
 
         summary::after {
             content: "+";
@@ -157,11 +179,7 @@
         }
         .rule-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 
-        .rule-title {
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
+        .rule-title { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
 
         .rule-punishment {
             font-size: 14px;
@@ -176,7 +194,6 @@
             font-style: italic;
             margin-top: 5px;
         }
-
     </style>
 </head>
 <body>
@@ -401,14 +418,20 @@
         </div>
     </main>
 
+    <!-- СКРИПТ ДЛЯ ТЕМЫ (ВНИЗУ) -->
     <script>
         const themeToggleBtn = document.getElementById('theme-toggle');
         const body = document.body;
+        
+        // Убираем временный класс, так как основной скрипт уже подхватил тему
+        document.documentElement.classList.remove('dark-theme-preload');
+
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'dark') {
             body.classList.add('dark-theme');
             themeToggleBtn.textContent = '🌙';
         }
+        
         themeToggleBtn.addEventListener('click', () => {
             body.classList.toggle('dark-theme');
             if (body.classList.contains('dark-theme')) {
