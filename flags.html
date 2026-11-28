@@ -23,7 +23,8 @@
             --accent-color: #4CAF50;
             --danger-color: #d32f2f;
             --warn-color: #f57c00;
-            --cmd-color: #2b78e4;
+            --flag-color: #2E7D32; /* ТЕМНО-ЗЕЛЕНЫЙ для названий флагов */
+            --value-color: #8E24AA; /* ФИОЛЕТОВЫЙ для allow/deny */
         }
 
         html.dark-theme-preload {
@@ -36,7 +37,8 @@
             --accent-color: #81c784;
             --danger-color: #ff5252;
             --warn-color: #ffb74d;
-            --cmd-color: #64b5f6;
+            --flag-color: #81C784; /* СВЕТЛО-ЗЕЛЕНЫЙ для темной темы */
+            --value-color: #CE93D8; /* СВЕТЛО-ФИОЛЕТОВЫЙ для темной темы */
         }
 
         body.dark-theme {
@@ -49,7 +51,8 @@
             --accent-color: #81c784;
             --danger-color: #ff5252;
             --warn-color: #ffb74d;
-            --cmd-color: #64b5f6;
+            --flag-color: #81C784;
+            --value-color: #CE93D8;
         }
 
         * {
@@ -135,8 +138,8 @@
         .page-content h2 { margin-bottom: 15px; color: var(--text-color); text-align: center; }
         
         .info-box {
-            background-color: rgba(43, 120, 228, 0.1);
-            border-left: 5px solid var(--cmd-color);
+            background-color: rgba(46, 125, 50, 0.1);
+            border-left: 5px solid var(--flag-color);
             padding: 15px 20px;
             border-radius: 4px;
             margin-bottom: 30px;
@@ -146,7 +149,7 @@
         .info-box code {
             font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
-            color: var(--cmd-color);
+            color: var(--flag-color);
         }
 
         /* Стили для аккордеона */
@@ -200,7 +203,7 @@
         .flag-name {
             font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
-            color: var(--cmd-color);
+            color: var(--flag-color);
             font-size: 16px;
         }
 
@@ -212,8 +215,9 @@
 
         .flag-values {
             font-size: 14px;
-            color: var(--warn-color);
+            color: var(--value-color); /* Используем фиолетовый */
             font-weight: bold;
+            margin-top: 3px;
         }
 
     </style>
