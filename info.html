@@ -3,26 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DexCompl</title>
+    <title>Информация - DexCompl</title>
+    
+    <!-- ЗАЩИТА ОТ ВСПЫШКИ СВЕТЛОЙ ТЕМЫ -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme-preload');
+        }
+    </script>
+
     <style>
-        /* --- ЦВЕТА ДЛЯ СВЕТЛОЙ ТЕМЫ --- */
         :root {
             --bg-color: #ffffff;
             --text-color: #333333;
             --sidebar-bg: #f4f4f4;
             --border-color: #e0e0e0;
             --hover-color: #e0e0e0;
-            --accent-color: #d32f2f;
+            --card-bg: #f9f9f9;
+            --accent-color: #4CAF50;
+            --danger-color: #d32f2f;
+            --warn-color: #f57c00;
         }
 
-        /* --- ЦВЕТА ДЛЯ ТЕМНОЙ ТЕМЫ --- */
+        html.dark-theme-preload {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --danger-color: #ff5252;
+            --warn-color: #ffb74d;
+        }
+
         body.dark-theme {
             --bg-color: #1e1e1e;
             --text-color: #ffffff;
             --sidebar-bg: #2d2d2d;
             --border-color: #444444;
             --hover-color: #444444;
-            --accent-color: #ff5252;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --danger-color: #ff5252;
+            --warn-color: #ffb74d;
         }
 
         * {
@@ -63,14 +87,8 @@
             border-bottom: 1px solid var(--border-color);
         }
 
-        .sidebar a:hover {
-            background-color: var(--hover-color);
-        }
-
-        .sidebar a.active {
-            background-color: var(--border-color);
-            font-weight: bold;
-        }
+        .sidebar a:hover { background-color: var(--hover-color); }
+        .sidebar a.active { background-color: var(--border-color); font-weight: bold; }
 
         /* --- ПРАВАЯ ЧАСТЬ --- */
         .main-content {
@@ -80,7 +98,6 @@
             position: relative;
         }
 
-        /* --- КНОПКА ТЕМЫ --- */
         .theme-toggle {
             position: absolute;
             top: 20px;
@@ -95,9 +112,7 @@
             transition: all 0.2s;
         }
 
-        .theme-toggle:hover {
-            background-color: var(--hover-color);
-        }
+        .theme-toggle:hover { background-color: var(--hover-color); }
 
         header {
             text-align: center;
@@ -105,14 +120,9 @@
             border-bottom: 2px solid var(--border-color);
         }
 
-        h1 {
-            font-size: 3rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-            color: var(--text-color);
-        }
+        h1 { font-size: 3rem; font-weight: bold; letter-spacing: 2px; color: var(--text-color); }
 
-        /* --- СТИЛИ ДЛЯ КОНТЕНТА --- */
+        /* --- КОНТЕНТ --- */
         .page-content {
             padding: 40px;
             line-height: 1.6;
@@ -124,14 +134,14 @@
 
         .warning-box {
             background-color: rgba(211, 47, 47, 0.1);
-            border-left: 5px solid var(--accent-color);
+            border-left: 5px solid var(--danger-color);
             padding: 20px;
             margin-top: 30px;
             border-radius: 4px;
         }
 
         .warning-box h3 {
-            color: var(--accent-color);
+            color: var(--danger-color);
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -146,7 +156,6 @@
 </head>
 <body>
 
-    <!-- ЛЕВОЕ МЕНЮ -->
     <aside class="sidebar">
         <a href="index.html" class="active">Информация</a>
         <a href="rules.html">Правила Dexland</a>
@@ -157,16 +166,13 @@
         <a href="recovery.html">Восстановление аккаунта</a>
     </aside>
 
-    <!-- ПРАВАЯ ЧАСТЬ -->
     <main class="main-content">
-        
         <button class="theme-toggle" id="theme-toggle" title="Сменить тему">☀️</button>
 
         <header>
             <h1>DexCompl</h1>
         </header>
         
-        <!-- ТОЛЬКО ТВОЙ ТЕКСТ -->
         <div class="page-content">
             <h2>О проекте DexCompl</h2>
             
@@ -176,18 +182,33 @@
                 <h3>⚠️ Важное уточнение</h3>
                 <p>Создатели DexCompl <strong>не являются</strong> частью администрации или команды модерации проекта Dexland. Мы — обычные игроки, которые просто хотят поделиться полезной информацией и помочь сообществу. Все официальные вопросы, связанные с работой сервера, необходимо решать напрямую через администрацию Dexland.</p>
             </div>
+
+            <!-- Блок с историей -->
+            <h3 style="margin-top: 35px; color: var(--accent-color); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 15px;">📜 История проекта</h3>
+            <p>Идея о создании DexCompl зародилась ещё в <strong>мае 2026 года</strong>. Активная фаза разработки началась в <strong>ноябре 2026 года</strong> и продолжается до сих пор. Мы постоянно развиваемся, улучшаем наши проекты, добавляем новые функции и делаем всё возможное, чтобы ваше пребывание на сервере было максимально комфортным и удобным.</p>
+
+            <!-- Блок с пожеланием и автором -->
+            <div style="margin-top: 40px; padding: 20px; background-color: var(--card-bg); border-radius: 8px; border-left: 5px solid var(--accent-color); text-align: center;">
+                <p style="font-size: 18px; font-weight: bold; margin-bottom: 10px; color: var(--text-color);">✨ Желаем вам приятной игры, лёгкого крафта и верных друзей на просторах Dexland!</p>
+                <p style="font-size: 16px; color: var(--text-color); margin-bottom: 15px;">Пусть каждый ваш день в игре будет полон ярких моментов и интересных открытий.</p>
+                <p style="font-size: 14px; color: var(--warn-color); font-weight: bold; letter-spacing: 1px;">С любовью к сообществу, автор проекта — Musteruo*</p>
+            </div>
         </div>
     </main>
 
-    <!-- СКРИПТ ДЛЯ ТЕМЫ -->
+    <!-- СКРИПТ ДЛЯ ТЕМЫ (ВНИЗУ) -->
     <script>
         const themeToggleBtn = document.getElementById('theme-toggle');
         const body = document.body;
+        
+        document.documentElement.classList.remove('dark-theme-preload');
+
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'dark') {
             body.classList.add('dark-theme');
             themeToggleBtn.textContent = '🌙';
         }
+        
         themeToggleBtn.addEventListener('click', () => {
             body.classList.toggle('dark-theme');
             if (body.classList.contains('dark-theme')) {
