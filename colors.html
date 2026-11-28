@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Коды цветов - DexCompl</title>
+    
+    <!-- ЗАЩИТА ОТ ВСПЫШКИ СВЕТЛОЙ ТЕМЫ -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark-theme-preload');
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --sidebar-bg: #f4f4f4;
+            --border-color: #e0e0e0;
+            --hover-color: #e0e0e0;
+            --card-bg: #f9f9f9;
+            --accent-color: #4CAF50;
+            --danger-color: #d32f2f;
+            --warn-color: #f57c00;
+            --cmd-color: #2E7D32; 
+            --table-border: #ccc;
+        }
+
+        html.dark-theme-preload {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --danger-color: #ff5252;
+            --warn-color: #ffb74d;
+            --cmd-color: #81C784;
+            --table-border: #555;
+        }
+
+        body.dark-theme {
+            --bg-color: #1e1e1e;
+            --text-color: #ffffff;
+            --sidebar-bg: #2d2d2d;
+            --border-color: #444444;
+            --hover-color: #444444;
+            --card-bg: #2a2a2a;
+            --accent-color: #81c784;
+            --danger-color: #ff5252;
+            --warn-color: #ffb74d;
+            --cmd-color: #81C784;
+            --table-border: #555;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- ЛЕВОЕ МЕНЮ --- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar a:hover { background-color: var(--hover-color); }
+        .sidebar a.active { background-color: var(--border-color); font-weight: bold; }
+
+        /* --- ПРАВАЯ ЧАСТЬ --- */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover { background-color: var(--hover-color); }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        h1 { font-size: 3rem; font-weight: bold; letter-spacing: 2px; color: var(--text-color); }
+
+        /* --- КОНТЕНТ --- */
+        .page-content {
+            padding: 40px;
+            line-height: 1.6;
+            max-width: 1000px;
+        }
+
+        .page-content h2 { margin-bottom: 20px; color: var(--text-color); text-align: center; }
+        .page-content h3 { margin-bottom: 15px; margin-top: 30px; color: var(--accent-color); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
+
+        .info-box {
+            background-color: rgba(46, 125, 50, 0.1);
+            border-left: 5px solid var(--cmd-color);
+            padding: 15px 20px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        .cmd-syntax {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: var(--cmd-color);
+            background-color: rgba(46, 125, 50, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        /* Стили для таблиц */
+        .color-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .color-table th, .color-table td {
+            padding: 10px 15px;
+            text-align: left;
+            border: 1px solid var(--table-border);
+        }
+
+        .color-table th {
+            background-color: var(--sidebar-bg);
+            font-weight: bold;
+        }
+
+        /* Стили для цветных ячеек */
+        .color-preview {
+            width: 40px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Кнопка-ссылка */
+        .external-link-btn {
+            display: inline-block;
+            background-color: #5865F2; /* Цвет Discord, выглядит хорошо */
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: background 0.2s;
+        }
+        .external-link-btn:hover { background-color: #4752C4; }
+
+        /* Адаптивность для таблиц на телефонах */
+        @media (max-width: 600px) {
+            .color-table th, .color-table td { padding: 8px; font-size: 14px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <a href="index.html">Информация</a>
+        <a href="rules.html">Правила Dexland</a>
+        <a href="commands.html">Полезные команды</a>
+        <a href="flags.html">Флаги регионов</a>
+        <a href="colors.html" class="active">Коды цветов</a>
+        <a href="symbols.html">Разнообразные символы</a>
+        <a href="recovery.html">Восстановление аккаунта</a>
+    </aside>
+
+    <main class="main-content">
+        <button class="theme-toggle" id="theme-toggle" title="Сменить тему">☀️</button>
+
+        <header>
+            <h1>DexCompl</h1>
+        </header>
+        
+        <div class="page-content">
+            <h2>Коды цветов и форматирование</h2>
+            
+            <div class="info-box">
+                <strong>❗ Обновление команды /chatcolor</strong><br>
+                Теперь есть много способов для изменения цвета текста в чате:<br><br>
+                <span class="cmd-syntax">/chatcolor gui</span> - Меню выбора цвета<br>
+                <span class="cmd-syntax">/chatcolor set цвет1,цвет2...</span> - Установить обычные цвета в чате<br>
+                <span class="cmd-syntax">/chatcolor gradient цвет1,цвет2...</span> - Установить градиент в чате<br>
+                <span class="cmd-syntax">/chatcolor format &m,&l...</span> - Установить формат в чате (&l/&o/&n/&m)<br>
+                <span class="cmd-syntax">/chatcolor reset</span> - Сбросить цвет в чате
+            </div>
+
+            <div style="background-color: rgba(245, 124, 0, 0.1); border-left: 5px solid var(--warn-color); padding: 15px 20px; border-radius: 4px; margin-bottom: 30px;">
+                <strong>❗️ ВАЖНО:</strong> Все цвета Майнкрафт видно лишь на более новых версиях Майнкрафта. На старых версиях видно лишь <strong>Основные Цвета</strong>, представленные в таблице ниже.
+            </div>
+
+            <h3>🎨 Основные цвета</h3>
+            <table class="color-table">
+                <thead>
+                    <tr>
+                        <th>КОД</th>
+                        <th>НАЗВАНИЕ</th>
+                        <th>TEX. НАЗВАНИЕ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>&0</td><td class="color-preview" style="background-color: black; color: white;">Черный</td><td>black</td></tr>
+                    <tr><td>&1</td><td class="color-preview" style="background-color: #0000AA; color: white;">Тёмно-синий</td><td>dark_blue</td></tr>
+                    <tr><td>&2</td><td class="color-preview" style="background-color: #00AA00; color: white;">Тёмно-зелёный</td><td>dark_green</td></tr>
+                    <tr><td>&3</td><td class="color-preview" style="background-color: #00AAAA; color: white;">Тёмно-сине-зелёный</td><td>dark_aqua</td></tr>
+                    <tr><td>&4</td><td class="color-preview" style="background-color: #AA0000; color: white;">Тёмно-красный</td><td>dark_red</td></tr>
+                    <tr><td>&5</td><td class="color-preview" style="background-color: #AA00AA; color: white;">Тёмно-фиолетовый</td><td>dark_purple</td></tr>
+                    <tr><td>&6</td><td class="color-preview" style="background-color: #FFAA00; color: black;">Золотой</td><td>gold</td></tr>
+                    <tr><td>&7</td><td class="color-preview" style="background-color: #AAAAAA; color: black;">Серый</td><td>gray</td></tr>
+                    <tr><td>&8</td><td class="color-preview" style="background-color: #555555; color: white;">Тёмно-серый</td><td>dark_gray</td></tr>
+                    <tr><td>&9</td><td class="color-preview" style="background-color: #5555FF; color: white;">Голубой</td><td>blue</td></tr>
+                    <tr><td>&a</td><td class="color-preview" style="background-color: #55FF55; color: black;">Зелёный</td><td>green</td></tr>
+                    <tr><td>&b</td><td class="color-preview" style="background-color: #55FFFF; color: black;">Сине-зелёный</td><td>aqua</td></tr>
+                    <tr><td>&c</td><td class="color-preview" style="background-color: #FF5555; color: white;">Красный</td><td>red</td></tr>
+                    <tr><td>&d</td><td class="color-preview" style="background-color: #FF55FF; color: black;">Светло-фиолетовый</td><td>light_purple</td></tr>
+                    <tr><td>&e</td><td class="color-preview" style="background-color: #FFFF55; color: black;">Жёлтый</td><td>yellow</td></tr>
+                    <tr><td>&f</td><td class="color-preview" style="background-color: white; color: black;">Белый</td><td>white</td></tr>
+                </tbody>
+            </table>
+
+            <h3>✨ Форматирование текста</h3>
+            <table class="color-table">
+                <thead>
+                    <tr>
+                        <th>КОД</th>
+                        <th>НАЗВАНИЕ</th>
+                        <th>ПРИМЕР</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>&k</td><td>Магический текст</td><td style="font-family: monospace;">§kМагия</td></tr>
+                    <tr><td>&l</td><td>Жирный текст</td><td><strong>Жирный</strong></td></tr>
+                    <tr><td>&m</td><td>Зачеркнутый текст</td><td><del>Зачеркнутый</del></td></tr>
+                    <tr><td>&n</td><td>Подчеркнутый текст</td><td><u>Подчеркнутый</u></td></tr>
+                    <tr><td>&o</td><td>Курсивный текст</td><td><em>Курсив</em></td></tr>
+                    <tr><td>&r</td><td>Текст без форматирования</td><td>Сброс</td></tr>
+                </tbody>
+            </table>
+
+            <h3>🌐 Полезная ссылка</h3>
+            <p>Если вам нужны более разнообразные и необычные цвета (HEX-коды), вы можете посмотреть их на этом сайте:</p>
+            <a href="https://colorscheme.ru/html-colors.html" target="_blank" class="external-link-btn">Все цвета (colorscheme.ru)</a>
+
+        </div>
+    </main>
+
+    <!-- СКРИПТ ДЛЯ ТЕМЫ (ВНИЗУ) -->
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        document.documentElement.classList.remove('dark-theme-preload');
+
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            body.classList.add('dark-theme');
+            themeToggleBtn.textContent = '🌙';
+        }
+        
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            if (body.classList.contains('dark-theme')) {
+                themeToggleBtn.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggleBtn.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>
